@@ -16,6 +16,6 @@ Human --> Continuous corresponds to Experiment 3).
 The file name for data summarizing includes "_summary". File names for figure-generating code
 include "_plot" and the Figure number associated with the panel in the manuscript. 
  
-Data (including data that are complete but cleaned according to procedures described in the Methods
-and summaries by experimental condition) are in a distinct location. Link provided along with the code-sharing link.  
+Data (complete but cleaned according to procedures described in the Methods
+and summaries by experimental condition) are at: https://duke.box.com/v/Subramanian-et-al-manuscript1 
 
