@@ -20,8 +20,8 @@ for participant = 1:numPart
     noise = TTraining.Noise;
     targLoc = TTraining.Side + TTraining.Targloc/21.5;
     
-    xScatter = xEnd' - targLoc;
-    yScatter = yEnd;
+    xScatter = (xEnd/21.5)' - targLoc;
+    yScatter = (yEnd/21.5);
     
     noiseLevels = unique(noise);
     
@@ -33,9 +33,9 @@ for participant = 1:numPart
     lowNoiseSD(participant, 1) = std(xScatter(lowNoise));
     highNoiseSD(participant, 1) = std(xScatter(highNoise));
     
-    noNoiseSD(participant, 2) = std(yEnd(noNoise));
-    lowNoiseSD(participant, 2) = std(yEnd(lowNoise));
-    highNoiseSD(participant, 2) = std(yEnd(highNoise));
+    noNoiseSD(participant, 2) = std(yScatter(noNoise));
+    lowNoiseSD(participant, 2) = std(yScatter(lowNoise));
+    highNoiseSD(participant, 2) = std(yScatter(highNoise));
     
 end
 
