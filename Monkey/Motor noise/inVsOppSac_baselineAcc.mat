@@ -1,0 +1,54 @@
+%% bootstrap data for prior + noise experiment
+load('pooled_clean.mat')
+
+%% in direction of saccade
+%filter for jumps in saccade direction
+inSac = any(cleanData.targLoc < 0, 2) & cleanData.jumpSize < 0 | any(cleanData.targLoc > 0, 2) & cleanData.jumpSize > 0;
+
+%swtich filter based on inSac or oppSac and only include saccade trials
+valid = cleanData.validResp > 0 & inSac & cleanData.sacDir > 0; %include early responses
+
+isJump = cleanData.isJump(valid);
+resp =  cleanData.resp(valid);
+noise = cleanData.noise(valid);
+thresh = cleanData.thresh(valid);
+
+medPrior = thresh == 0.5;
+
+noiselevels = unique(noise);
+noNoise = noise == noiselevels(1);
+
+baselineResp = resp(medPrior & noNoise);
+baselineIsJump = isJump(medPrior & noNoise);
+
+isCorrect = baselineIsJump == 1 & baselineResp == 1 | baselineIsJump == 0 & baselineResp == 0;
+inSacData.acc = sum(isCorrect)/length(isCorrect);
+
+inSacData.CI = bootci(10000, @getAccuracy, isCorrect);
+
+%% 
+%filter for jumps opposite to saccade direction
+oppSac = any(cleanData.targLoc < 0, 2) & cleanData.jumpSize > 0 | any(cleanData.targLoc > 0, 2) & cleanData.jumpSize < 0;
+%swtich filter based on inSac or oppSac
+valid = cleanData.validResp > 0 & oppSac & cleanData.sacDir > 0; %include early responses
+
+isJump = cleanData.isJump(valid);
+resp =  cleanData.resp(valid);
+noise = cleanData.noise(valid);
+thresh = cleanData.thresh(valid);
+
+medPrior = thresh == 0.5;
+
+noiselevels = unique(noise);
+noNoise = noise == noiselevels(1);
+
+baselineResp = resp(medPrior & noNoise);
+baselineIsJump = isJump(medPrior & noNoise);isCorrect = baselineIsJump == 1 & baselineResp == 1 | baselineIsJump == 0 & baselineResp == 0;
+oppSacData.acc = sum(isCorrect)/length(isCorrect);
+
+oppSacData.CI = bootci(10000, @getAccuracy, isCorrect);
+
+%% 
+function acc = getAccuracy(isCorrect)
+    acc = sum(isCorrect)/length(isCorrect);
+end
